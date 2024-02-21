@@ -33,7 +33,19 @@ usethis::use_package("AF")
 usethis::use_package("PerformanceAnalytics")
 usethis::use_package("arsenal")
 
-devtools::build_win()
+devtools::check_win_devel()
 
 
-## install package from
+## github setup
+install.packages("gitcreds")
+library(gitcreds)
+gitcreds::gitcreds_set()
+usethis::create_github_token()
+usethis::use_git()
+usethis::use_github()
+usethis::use_git_remote("LearnEpi304", url = "https://github.com/sithor/LearnEpi304", overwrite = TRUE)
+usethis::pr_push()
+
+## install package from github
+
+devtools::install_github("dcossyleon/tutorialpackage")
