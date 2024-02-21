@@ -1,0 +1,214 @@
+---
+title: "4. Tutorial for POPLHLTH 304: Examining the differences between two groups for a continuous variable"
+author: "Simon Thornley"
+date: "`r format(Sys.time(), '%e %B, %Y')`"
+output: 
+ prettydoc::html_pretty:
+  theme: tactile
+---
+<center>
+![Out of my depth](images/colin-maynard-CEEhmAGpYzE-unsplash.jpg "Photo by Colin Maynard on Unsplash")
+</center>
+
+
+# Getting started with R
+
+This session, we will focus on statistical testing with R. 
+
+We will learn how to:
+
+* conduct *t*-tests
+* conduct chi-square tests
+* Interpret the results of such tests.
+
+We will be using the `epiDisplay` library to do these calculations.
+
+To read more about the `epiDisplay` library, see [here](https://rdocumentation.org/packages/epiDisplay/versions/3.5.0.1).
+
+## Before we start
+Cot death was an important problem in the 1980s and New Zealand experienced an epidemic of the disease. There was a competition between the lab scientists and epidemiologists over who would be able to come up with an answer to respond to the epidemic.
+
+The critical elements of a case-control study are the definition of cases and controls (the disease), and the potential exposures.
+
+<center>
+![Case-control study](images/download.png "Photo by Colin Maynard on Unsplash")
+</center>
+Here, **cases** were mothers of babies who had a child that died from unexplained causes in the first year of life, whereas **controls** were mothers of children less than one year old who were in normal health.
+
+Some of the possible **causes** or **exposures** were:
+
+* sleeping position (front vs. back or side)
+* bedsharing (yes or no)
+* maternal smoking (yes or no)
+
+## Loading libraries
+
+Two libraries that will help us achieve our goals today will be:
+ 
+```{r eval = FALSE}
+magrittr
+```
+which allows us to use the pipe operator (`%>%` ) in R. Also,
+
+```{r eval = FALSE}
+lattice
+```
+is useful for making plots.
+
+To install and load libraries in R we use the following code:
+
+```{r eval = FALSE}
+if (!require(rio)) install.packages("rio"); library(rio)
+## Note: 'library(rio)' means you don't have to always call
+## rio::import(etc...), you can instead write only 'import(etc...)'
+## R will now be able to 'look' for functions in the 'rio' library
+
+## Exercise
+## Write some code to install the epiDisplay, magrittr and lattice packages
+
+```
+
+## Import our data
+
+We will import some data from the internet. It is a cot-death dataset. We will talk about what it means later, but for now will just dive in to have a look at the data. It was a *case-control* study to look for risk factors for cot-death in the 1980s.
+
+We will use the following code:
+
+```{r eval = FALSE}
+df <- rio::import("https://flexiblelearning.auckland.ac.nz/data-analysis/menu/1/files/simple_sids_epiinfo2.xlsx")
+```
+This effectively takes our Excel sheet from the web and pulls it into our computer. The `<-` is an assignment operator which names our new spreadsheet `df`. I've chosen the name `df` because the technical word for a spreadsheet in `R` is a `data.frame`.
+
+
+## *t*-tests: do cases and controls have different birth weights?
+
+We want to know whether birth weight is likely to influence risk of cot-death.
+
+To do this we compare the means of the birth weights between the cases and the
+controls. Let's first examine the distribution of birth weight with the following code...
+```{r eval = FALSE}
+
+
+lattice::histogram(~ Birth_wt, data = df)
+
+```
+What does the distribution look like? Why is this important?
+
+Now let's compare the distribution of `Birth_wt` by `Case_status`.
+
+Here, the vertical line `|` means "*given*" or "*by*". Thus, the formula is saying plot 
+`Birth_wt` by `Case_status`
+
+```{r eval = FALSE}
+
+lattice::histogram(~ Birth_wt | Case_status, data = df)
+
+```
+To make it easier to appreciate the difference we are trying to see, let's try
+and refine the plot a little bit.
+
+```{r eval = FALSE}
+
+lattice::histogram( ~ Birth_wt | Case_status, data = df[, c("Birth_wt", "Case_status")] %>% na.omit,
+                    layout = c(1, 2),
+     xlab = "birth weight (grams)",
+    panel = function(x, ...) {
+      panel.histogram(x, ...)
+     panel.abline(v = mean(x, na.omit = TRUE), col = 'black', lty = 2 , lwd = 3)
+         } )
+
+```
+To plot the medians, we would have to change the following line of code
+
+`panel.abline(v = quantile(x, 0.5), col = 'black', lty = 2 , lwd = 3)`
+
+Note: here, the `layout = c(1, 2)` argument is stacking the plots on top of each other.
+
+The `xlab` argument is changing the x-axis label, and the function is drawing 
+a line at the median of each of the two distributions.
+
+What we are asking in the *t*-test is whether the difference in means is likely to be systematically different between the cases and controls.
+
+From the plot, what is your immediate conclusion?
+
+Also, observe the differences in the distributions of `Birth_wt` by `Case_status`.
+
+```{r eval = FALSE}
+lattice::bwplot( ~ Birth_wt | Case_status, data = df, 
+                 layout = c(1, 2), # columns first, rows second.
+                 xlab = "Birth weight (grams)") # modify x-axis label.
+```
+
+To check whether or not this difference is due to chance (the *null hypothesis*), we need to do a 
+*t*-test.
+
+The `t.test(y ~ x)` function in R is used where `y` is numeric and `x` is binary.
+
+```{r eval = FALSE}
+t.test(Birth_wt ~ Case_status, data = df)
+
+```
+
+`2.2e-16` is **scientific notation** which is the same as $2.2 \text{ x } 10^{-16}$ or 0.00000000000000022. This is a very small number, which means that if there were truly no difference in birth weight between the two groups, it would be extremely rare to see such a difference, if the study were repeated over and over. In fact, it would be expected to get such a result of more extreme less than 1 in **one hundred trillion** repetitions!
+
+As a bit of revision, we will remind ourselves of what the *t*-test means.
+
+The _t_ statistic estimates how many standard errors the observed results are from the null value of no difference. 
+
+The formula for the _t_ statistic is:
+\begin{align}
+        t  &= \frac{\text{difference in means}}{\text{standard error of difference in means}} \\
+           &= \frac{\bar{x}_1 - \bar{x}_2}{\text{standard error of difference in means}} \\
+           &= \frac{\bar{x}_1 - \bar{x}_2}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}} \\
+\text{Where:}\\
+\sigma &= \text{the standard deviation of the sample, in groups 1 and 2} \\
+n &= \text{the total number of measurements taken in groups 1 and 2} \\
+\bar{x} &= \text{the mean of groups 1 and 2} \\
+\end{align}
+
+The critical threshold for the _t_ statistic varies according to the degrees of freedom which is $n_1$ + $n_2$ - 2.
+
+We can visualise this distribution with the following code:
+
+```{r eval = FALSE}
+x <- seq(-10, 10, length = 100)
+dfreedom = 491
+plot(x, dnorm(x), type = "l", lty = 2, xlab = "t-value (standard errors from the mean)", 
+     ylab = "Density", 
+     main = "Comparison of t-distributions", col = "blue", lwd = 1.5)
+    lines(x, dt(x, dfreedom), col  = "red")
+    abline(v = c(-9.4866, 9.4866), col = "dark green", lwd = 1.5)
+```
+
+This is quite complicated, but the main issue is seeing the resulting plot.
+
+A non-parametric alternative which may be useful if you are concerned about the symmetry or normality assumptions of the distribution is the Wilcoxon Rank sum test (also known as the Mann-Whitney test). This is as follows:
+
+```{r eval = FALSE}
+wilcox.test(Birth_wt ~ Case_status, data = df)
+```
+Compare the two results. Are they in the same ballpark?
+
+How would you explain the results of this test to a colleague?
+
+## Homework
+
+What could be a possible biological explanation?
+
+What might be possible known causes of low birth weight?
+
+Possibilities here are: cigarette smoking and gestational age.
+
+Could we investigate this further in the data?
+
+Test to see whether or not there is a difference in `Birth_wt` by smoking status (`Mother_smoke`).
+
+Check whether gestational age (`Gestation`) differs by `Case_status`.
+
+Make both the plots and the statistical tests. Interpret both the plots and the tests.
+
+Do these results support our hypothesis, that these factors may mediate
+the relationship between birth weight and case status?
+
+
+

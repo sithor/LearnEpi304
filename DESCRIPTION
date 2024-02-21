@@ -1,14 +1,43 @@
 Package: LearnEpi304
-Title: What the Package Does (One Line, Title Case)
+Title: This Package Teaches Basic R and Posit skills and Basic Epidemiology.
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Simon", "Thornley", , "sithor@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-4227-4889"))
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: use_gpl3_license()
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-Suggests: 
-    learnr
+Imports: 
+    AF,
+    arsenal,
+    broom.mixed,
+    car,
+    DiagrammeR,
+    dplyr,
+    epiDisplay (>= 3.5.0.2),
+    epitools,
+    eulerr,
+    finalfit,
+    fs,
+    ggplot2,
+    ggstance,
+    gradethis (>= 0.2.14),
+    jtools,
+    kableExtra,
+    knitr,
+    lattice,
+    learnr,
+    NHANES,
+    PerformanceAnalytics,
+    png,
+    r2symbols,
+    readr,
+    rio,
+    skimr,
+    tufte,
+    vembedr,
+    visdat
+Remotes: 
+    rstudio/gradethis
