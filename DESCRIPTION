@@ -39,5 +39,5 @@ Imports:
     vembedr,
     visdat
 Remotes: 
-    rstudio/gradethis
+    rstudio/gradethis,
     rstudio/learnr
