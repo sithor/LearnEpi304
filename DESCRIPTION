@@ -28,7 +28,6 @@ Imports:
     kableExtra,
     knitr,
     lattice,
-    learnr,
     NHANES,
     PerformanceAnalytics,
     png,
@@ -41,3 +40,4 @@ Imports:
     visdat
 Remotes: 
     rstudio/gradethis
+    rstudio/learnr
