@@ -80,7 +80,7 @@ Here's an example of a recent [paper](https://onlinelibrary.wiley.com/doi/epdf/1
 
 ### Check your understanding
 
-```{r benefit, echo=FALSE, cache=TRUE}
+```{r benefit, echo=FALSE, cache=FALSE}
 learnr::question("What is the main benefit of `R` compared to other statistical packages?",
   learnr::answer("It always works as expected", message = "You'll quickly find this is not the case!"),
   learnr::answer("It has no errors.", message = "`R` is not 100% error free, no software is."),
@@ -112,7 +112,7 @@ Make sure your data is housed on a network drive -- not your desktop -- so that 
 
 ### Check your understanding
 
-```{r R_code, echo=FALSE, cache=TRUE}
+```{r R_code, echo=FALSE, cache=FALSE}
 learnr::question("What is the file type for your R code?",
   learnr::answer(".Rdata", message = "No, this is the file type of R data storage, not code!"),
   learnr::answer(".xlsx", message = "No, this is the file type of MS Excel spreadsheets."),
@@ -126,7 +126,7 @@ learnr::question("What is the file type for your R code?",
 
 We can easily use some `R` code to create these directories. Here's an example:
 
-```{r create_directory, exercise=TRUE, cache=TRUE}
+```{r create_directory, exercise=TRUE, cache=FALSE}
 
 dir.create("Documents")
 dir.create("R_code")
@@ -147,7 +147,7 @@ We can see that `R` has created the necessary directories for us to store the th
 
 ### Check your understanding...
 
-```{r files, echo=FALSE, cache=TRUE}
+```{r files, echo=FALSE, cache=FALSE}
 learnr::question("What is best practice for file management for data analysis?",
   learnr::answer("It doesn't matter where your analysis is stored.", message = "No, this is asking for trouble."),
   learnr::answer("Each analysis should be stored in its own folder.", correct = TRUE, message = "Well done! It is important to stay organised."),
@@ -182,7 +182,7 @@ In Windows, the convention is to have a drive letter followed by a colon e.g. `C
 
 Paths can also be *relative* or *absolute*, which can be a tricky thing for novice programmers to get their heads around. An absolute path describes a location relative to the to the root or starting directory. In Windows this is `C:\` and on a Mac, it is `/`. A relative path is used more frequently in programming, because it makes your code more portable across different computers. Relative paths, instead have the concept of a **working directory**. This is the folder where the programme is looking for files. Deviations from this directory are indicated by paths that start with a `.` (current directory) or `..` (parent directory), such as `"./data/sids.xlsx"`. This means "start from the working directory where the programme is currently looking, then go to the `data` directory, then look in the `data` directory for `sids.xlsx`".
 
-```{r relative_paths, echo=FALSE, cache=TRUE}
+```{r relative_paths, echo=FALSE, cache=FALSE}
 learnr::question("Which of the following are relative paths?",
   learnr::answer("`C:\\users\\Simon\\My documents`", message = "`Sorry, this is an absolute path from a Windows machine due to the 'C:\\' text indicating the root directory`"),
   learnr::answer("`C:\\users/Simon/My photos`", message = "`Sorry, this is an absolute path from a Windows machine due to the 'C:\\' text indicating the root directory`"),
@@ -197,7 +197,7 @@ It is a good idea to store your work on a drive that will be backed up. Electron
 
 ### Revising R file paths
 
-```{r paths, echo=FALSE, cache=TRUE}
+```{r paths, echo=FALSE, cache=FALSE}
 learnr::question("Which of the following are legitimate file paths in R?",
   learnr::answer("`C:\\users\\Simon\\My documents`", message = "`single backslashes (\\) are not allowed in R file paths. Double backslashes (\\\\) are however.`"),
   learnr::answer("`C:\\users/Simon/My documents`", message = "`single backslashes (\\) are not allowed in R file paths. Double backslashes (\\\\) are however.`"),
@@ -212,7 +212,7 @@ learnr::question("Which of the following are legitimate file paths in R?",
 
 R has a concept of the *'working directory'* or 'folder'. This is the directory where R looks to find stuff you may be working on. To find out where this is on your machine, input the code for the following function: `getwd()`. Try this below and observe the output.
 
-```{r working_directory, exercise=TRUE, cache=TRUE}
+```{r working_directory, exercise=TRUE, cache=FALSE}
 getwd()
 
 ```
@@ -236,7 +236,7 @@ It will be able to find files that you tell to look for in this directory.
 
 R is built on functions. Functions take some sort of input and transform it into output.
 
-```{r function_dia, echo = FALSE, cache=TRUE}
+```{r function_dia, echo = FALSE, cache=FALSE}
 
 response_diag <- DiagrammeR::grViz(diagram = "digraph flowchart {
       graph [layout = dot, rankdir = LR]
@@ -261,7 +261,7 @@ response_diag
 
 In addition, *arguments* and *options* are used to modify the output of functions. Functions often have default or automatically applied arguments, that have to be explicitly modified.
 
-```{r arg_dia, echo = FALSE, cache=TRUE}
+```{r arg_dia, echo = FALSE, cache=FALSE}
 
 response_diag2 <- DiagrammeR::grViz(diagram = "digraph flowchart {
       graph [layout = dot, rankdir = LR]
@@ -327,7 +327,7 @@ Ok, so we know that `sids.xlsx` is in our `data` directory, and that the `data` 
 
 Now we can go ahead and import our dataset `sids.xlsx` into R for analysis. We need to tell `R` where to find `sids.xlsx`. We know of a function that reads `.xlsx` files called `import()` in the `rio` package. We need to add the path as the first argument to the `import()` function. Go ahead and try importing the Excel`r sym("trademark")` sheet by modifying the following code. Remember that the path has to be in quotation marks as it is a string. We have decided to name our spreadsheet `df`, standing for *data frame*. The `<-` is an *assignment* operator.
 
-```{r import_excel, exercise=TRUE, cache=TRUE}
+```{r import_excel, exercise=TRUE, cache=FALSE}
 ## This function needs a text relative file path in quotes as an argument
 df <- rio::import()
 
@@ -379,7 +379,7 @@ Great! We now have our spreadsheet in `R`, and we are now ready to roll!
 
 ### Interpreting the meaning of the *sids.xlsx* data
 
-```{r interpret_df, echo=FALSE, cache=TRUE}
+```{r interpret_df, echo=FALSE, cache=FALSE}
 learnr::question("What are the columns and what are the rows of the `df` data.frame?",
   learnr::answer("Rows are subjects and columns are characteristics or variables.", correct = TRUE),
   learnr::answer("Rows are characteristics or variables and columns are subjects or people."),  
