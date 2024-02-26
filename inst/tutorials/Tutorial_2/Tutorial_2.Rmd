@@ -385,4 +385,4 @@ learnr::question("What are the columns and what are the rows of the `df` data.fr
   allow_retry = TRUE)
 ```
 
-Great, we are now ready for doing going to the next step. Well done! 🤠
+Great, we are now ready for going to the next step. Well done! 🤠
