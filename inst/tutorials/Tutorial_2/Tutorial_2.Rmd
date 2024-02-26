@@ -377,7 +377,7 @@ grade_this_code("Awesome, you now know how to have a sneak peak at your new data
 
 ```
 
-### 
+
 
 Great! We now have our spreadsheet in `R`, and we are now ready to roll!
 
