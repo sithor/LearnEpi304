@@ -371,6 +371,7 @@ head(df)
 ```{r check_spreadsheet-check}
 grade_this_code("Awesome, you now know how to have a sneak peak at your new data.")
 
+
 ```
 
 ### 
